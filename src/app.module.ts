@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 
-import { UserModule } from './users/user.module';
+
 import { UserService } from './users/user.service';
 import { UserController } from './users/user.controller';
+import { UserModule } from './users/user.module';
 
 
 
@@ -16,7 +17,7 @@ import { UserController } from './users/user.controller';
     MongooseModule.forRoot(process.env.MONGO_URI!),
     UserModule,
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
