@@ -9,7 +9,8 @@ import { AppointmentController } from "./appointment.controller";
 
 @Module ({
     imports: [MongooseModule.forFeature([{name: Appointment.name, schema: AppointmentSchema}]),AuthModule], 
-    providers: [AppointmentController],
+    controllers: [AppointmentController],
+    providers: [AppointmentService],
     exports: [AppointmentService],
 })  
 
