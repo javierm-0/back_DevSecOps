@@ -8,23 +8,23 @@ import { Response } from 'express';
 export class UserController {
     constructor(private readonly userService : UserService){}
 
-    /*
+    
     @UseGuards(AuthGuard('jwt'))
     @Get()
     async getAllUsers(){
         return this.userService.getAll();
-    }*/
+    }
 
     @UseGuards(AuthGuard('jwt'))
     @Get(':id')
     async getUserById(@Param('id') id : string){
         return this.userService.getOneById(id);
     }
-    /* descomentar para crear users xd
+    
     @Post('/createUser')
     async createUser(@Body() userDto : CreateUserDto){
         return this.userService.createUser(userDto);
-    }*/
+    }
 
     @UseGuards(AuthGuard('jwt'))
     @Patch('/updateUser/:id')
