@@ -9,7 +9,7 @@ import { AppointmentDto } from "./dto/appointment.dto";
 export class AppointmentService {
     constructor(@InjectModel(Appointment.name) private appointmentModel : Model<Appointment>) {}
 
-    async getAllAppointmentsByUserId(userid: number ) : Promise <Appointment[]>{
+    async getAllAppointmentsByUserId(userid: string ) : Promise <Appointment[]>{
         return await this.appointmentModel.find({userid: userid});
     }
 

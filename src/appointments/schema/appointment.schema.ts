@@ -16,7 +16,7 @@ export class Appointment{
     info: string;
 
     @Prop ({required: true})
-    userid : number;
+    userid : string;
 
 }
 

@@ -16,5 +16,5 @@ export class AppointmentDto{
 
     @IsString()
     @IsNotEmpty()
-    userid!: number;
+    userid!: string;
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { AppointmentService } from "./appointment.service";
 import { AppointmentDto } from "./dto/appointment.dto";
 
@@ -13,8 +13,8 @@ export class AppointmentController {
         return this.appointmementService.createAppointment(appointment);
     }
 
-    @Get('/getByUserId')
-    async getAllAppointmentsByUserId(@Body('userid') userid: number) {
+    @Get('/getByUserId/:userid')
+    async getAllAppointmentsByUserId(@Param('userid') userid: string) {
         return this.appointmementService.getAllAppointmentsByUserId(userid);
     }
 
