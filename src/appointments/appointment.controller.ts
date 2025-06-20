@@ -14,6 +14,7 @@ export class AppointmentController {
         const validApmnt :AppointmentDto = {
             ...appointment,
             userid: req.user.userId,
+            date: new Date(Date.now()),
         };
         return this.appointmementService.createAppointment(validApmnt);
     }
