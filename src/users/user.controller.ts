@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Patch, Post, UseGuards, Res, HttpStatus } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Patch, Post, UseGuards, Res, HttpStatus, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, LoggedUserDto, UpdateUserDto } from './dto/user.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -8,17 +8,17 @@ import { Response } from 'express';
 export class UserController {
     constructor(private readonly userService : UserService){}
 
-    
+    /*
     @UseGuards(AuthGuard('jwt'))
     @Get()
     async getAllUsers(){
         return this.userService.getAll();
-    }
+    }descomentar solo si se va a usar*/
 
     @UseGuards(AuthGuard('jwt'))
-    @Get(':id')
-    async getUserById(@Param('id') id : string){
-        return this.userService.getOneById(id);
+    @Get()
+    async getUserById(@Req() req){
+        return this.userService.getOneById(req.user.userId);
     }
     
     @Post('/createUser')
@@ -27,9 +27,9 @@ export class UserController {
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @Patch('/updateUser/:id')
-    async updateUser(@Body() updatedUserDto : UpdateUserDto, @Param('id') id : string){
-        return this.userService.updateUser(id, updatedUserDto);
+    @Patch('/updateUser/')
+    async updateUser(@Body() updatedUserDto : UpdateUserDto, @Req() req){
+        return this.userService.updateUser(req.user.userId, updatedUserDto);
     }
 
     @Post('/validateLogin')

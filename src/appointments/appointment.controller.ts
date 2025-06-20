@@ -1,31 +1,39 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
 import { AppointmentService } from "./appointment.service";
-import { AppointmentDto } from "./dto/appointment.dto";
+import { AppointmentDto, AppointmentDtoFromUser } from "./dto/appointment.dto";
+import { AuthGuard } from "@nestjs/passport";
 
 
 @Controller ('appointments')
 export class AppointmentController {
     constructor(private readonly appointmementService: AppointmentService) {}
 
-
+    @UseGuards(AuthGuard('jwt'))
     @Post('/createAppointment')
-    async createAppintment (@Body() appointment: AppointmentDto){
-        return this.appointmementService.createAppointment(appointment);
+    async createAppintment(@Req() req, @Body() appointment: AppointmentDtoFromUser){
+        const validApmnt :AppointmentDto = {
+            ...appointment,
+            userid: req.userId,
+        };
+        return this.appointmementService.createAppointment(validApmnt);
     }
 
-    @Get('/getByUserId/:userid')
-    async getAllAppointmentsByUserId(@Param('userid') userid: string) {
-        return this.appointmementService.getAllAppointmentsByUserId(userid);
+    @UseGuards(AuthGuard('jwt'))
+    @Get('/getByUserId/')
+    async getAllAppointmentsByUserId(@Req() req) {
+        return this.appointmementService.getAllAppointmentsByUserId(req.user.userId);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Post('/deleteAppointment')
-    async deleteAppointment(@Body('id') id: string) {
-        return this.appointmementService.deleteAppointment(id);
+    async deleteAppointment(@Req() req) {
+        return this.appointmementService.deleteAppointment(req.user.userId);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Post('/updateAppointment')
-    async updateAppointment(@Body('id') id: string, @Body() appointment: AppointmentDto) {
-        return this.appointmementService.updateAppointment(id, appointment);
+    async updateAppointment(@Req() req,@Body() appointment: AppointmentDto) {
+        return this.appointmementService.updateAppointment(req.user.userId, appointment);
     }
 
 

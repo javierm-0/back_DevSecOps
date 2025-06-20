@@ -18,3 +18,17 @@ export class AppointmentDto{
     @IsNotEmpty()
     userid!: string;
 }
+
+export class AppointmentDtoFromUser{
+    @IsString()
+    @IsNotEmpty()
+    name!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    date!: Date;
+
+    @IsString()
+    @IsOptional()
+    info?: string;
+}

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Appointment } from "./schema/appointment.schema";
 import { Model } from "mongoose";
@@ -10,11 +10,17 @@ export class AppointmentService {
     constructor(@InjectModel(Appointment.name) private appointmentModel : Model<Appointment>) {}
 
     async getAllAppointmentsByUserId(userid: string ) : Promise <Appointment[]>{
-        return await this.appointmentModel.find({userid: userid});
+        const apmnt = await this.appointmentModel.find({userid: userid});
+        if(!apmnt){throw new NotFoundException("no existe appointment");}
+        return apmnt
     }
 
     async createAppointment(appointment: AppointmentDto) : Promise<Appointment> {
-        return await this.appointmentModel.create(appointment);
+        const foundAppointment = await this.appointmentModel.create(appointment);
+        if(!foundAppointment){
+            throw new Error("no se puede crear appointment");
+        }
+        return foundAppointment;
     }
 
     async deleteAppointment(id: string) : Promise<Appointment | null> {
