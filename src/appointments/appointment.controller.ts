@@ -13,7 +13,7 @@ export class AppointmentController {
     async createAppintment(@Req() req, @Body() appointment: AppointmentDtoFromUser){
         const validApmnt :AppointmentDto = {
             ...appointment,
-            userid: req.userId,
+            userid: req.user.userId,
         };
         return this.appointmementService.createAppointment(validApmnt);
     }
