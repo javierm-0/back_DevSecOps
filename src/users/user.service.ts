@@ -8,7 +8,7 @@ import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>,
+    constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
                                         private readonly authService: AuthService,){}
     
     async validateLogin(loggedUserDto: LoggedUserDto) {
