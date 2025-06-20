@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
 import { AppointmentService } from "./appointment.service";
 import { AppointmentDto, AppointmentDtoFromUser } from "./dto/appointment.dto";
 import { AuthGuard } from "@nestjs/passport";
