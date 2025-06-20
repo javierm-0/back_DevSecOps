@@ -16,4 +16,14 @@ export class AppointmentService {
     async createAppointment(appointment: AppointmentDto) : Promise<Appointment> {
         return await this.appointmentModel.create(appointment);
     }
+
+    async deleteAppointment(id: string) : Promise<Appointment | null> {
+        return await this.appointmentModel.findByIdAndDelete(id);
+    }
+
+    async updateAppointment(id: string, appointment: AppointmentDto) : Promise<Appointment | null> {
+        return await this.appointmentModel.findByIdAndUpdate(id, appointment, {new: true});
+    }
+
+
 }
