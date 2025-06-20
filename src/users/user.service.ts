@@ -4,17 +4,22 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument} from './schema/user.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>){}
+    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>,
+                                        private authService: AuthService,){}
     
     async validateLogin(loggedUserDto: LoggedUserDto) {
         const userNameFromDto = loggedUserDto.userName;
         const user = await this.userModel.findOne({userName: userNameFromDto});
         if(user){
             const result = await bcrypt.compare(loggedUserDto.password, user.password!)
-            return result;
+            const jwtRetornado = await this.authService.generateToken(loggedUserDto);
+            return {
+                token: jwtRetornado.token
+            }
         }
         return false;
     }
