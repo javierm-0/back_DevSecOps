@@ -16,12 +16,14 @@ export class UserService {
         const user = await this.userModel.findOne({userName: userNameFromDto});
         if(user){
             const result = await bcrypt.compare(loggedUserDto.password, user.password!)
-            const jwtRetornado = await this.authService.generateToken(loggedUserDto);
-            return {
-                token: jwtRetornado.token
+            if (result) {
+                const jwtRetornado = await this.authService.generateToken(loggedUserDto);
+                return {
+                    token: jwtRetornado.token
+                }
             }
         }
-        return false;
+        return null;
     }
 
     async updateUser(id: any, updatedUserDto: UpdateUserDto) {

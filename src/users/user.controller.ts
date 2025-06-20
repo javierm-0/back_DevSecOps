@@ -1,7 +1,8 @@
-import { BadRequestException, Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Patch, Post, UseGuards, Res, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, LoggedUserDto, UpdateUserDto } from './dto/user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -32,7 +33,13 @@ export class UserController {
     }
 
     @Post('/validateLogin')
-    async login(@Body() loggedUserDto : LoggedUserDto){
-        return await this.userService.validateLogin(loggedUserDto);
+    async login(@Body() loggedUserDto : LoggedUserDto, @Res() res: Response){
+        const result = await this.userService.validateLogin(loggedUserDto);
+
+        if (!result) {
+            return res.status(HttpStatus.UNAUTHORIZED).json({message: 'Usuario y/o Contraseña incorrectos'});
+        }
+
+        return res.status(HttpStatus.CREATED).json(result);
     }
 }
