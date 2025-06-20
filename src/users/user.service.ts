@@ -19,8 +19,8 @@ export class UserService {
             const result = await bcrypt.compare(loggedUserDto.password, user.password)
             if (result) 
             {
-                const jwtRetornado = (await this.authService.generateToken(loggedUserDto)).token;
-                return jwtRetornado;
+                const token = (await this.authService.generateToken(loggedUserDto)).token;
+                return {token};
             }        
         }
         return null;

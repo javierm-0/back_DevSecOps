@@ -28,3 +28,13 @@ export class AppointmentDtoFromUser{
     @IsOptional()
     info?: string;
 }
+
+export class UpdateAppointmentDtoFromUser{
+    @IsString()
+    @IsOptional()
+    name?: string;
+
+    @IsString()
+    @IsOptional()
+    info?: string;
+}

@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Appointment } from "./schema/appointment.schema";
 import { Model } from "mongoose";
-import { AppointmentDto, AppointmentDtoFromUser } from "./dto/appointment.dto";
+import { AppointmentDto, AppointmentDtoFromUser, UpdateAppointmentDtoFromUser } from "./dto/appointment.dto";
 
 
 @Injectable()
@@ -24,22 +24,19 @@ export class AppointmentService {
     }
 
     //retorna el appointment borrado o null(si no existe)
-    async deleteAppointment(id: string) : Promise<Appointment | null> {
-        const res = await this.appointmentModel.findByIdAndDelete(id);
+    async deleteAppointment(id: string, userId: string) : Promise<Appointment | null> {
+        const res = await this.appointmentModel.findByIdAndDelete({_id: id, userid: userId});
         if(!res){
-            throw new NotFoundException("No hay appointment con ese id");
+            throw new NotFoundException("No hay appointment con ese id o no le pertenece a este usuario");
         }
         return res;
     }
     //retorna el appointment nuevo o null(si no existe)
-    async updateAppointment(id: string, appointment: AppointmentDtoFromUser) : Promise<AppointmentDto | null> {
-        const exist = await this.appointmentModel.findById(id);
-        if(!exist){
-            console.log("mitico console.log, no existe");
-        }
+    async updateAppointment(id: string, userId: string, appointment: UpdateAppointmentDtoFromUser) : Promise<AppointmentDto | null> {
+        const apmnt = await this.appointmentModel.find({_id: id, userid: userId});
         const res = await this.appointmentModel.findByIdAndUpdate(id, appointment, {new: true});
         if(!res){
-            throw new NotFoundException("No hay appointment con ese id");
+            throw new NotFoundException("No hay appointment con ese id o no le pertenece a este usuario");
         }
         return res;
     }
