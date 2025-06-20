@@ -2,12 +2,12 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Appointment } from "./schema/appointment.schema";
 import { Model } from "mongoose";
-import { AppointmentDto } from "./dto/appointment.dto";
+import { AppointmentDto, AppointmentDtoFromUser } from "./dto/appointment.dto";
 
 
 @Injectable()
 export class AppointmentService {
-    constructor(@InjectModel(Appointment.name) private readonly appointmentModel : Model<Appointment>) {}
+    constructor(@InjectModel(Appointment.name) private appointmentModel : Model<Appointment>) {}
 
     async getAllAppointmentsByUserId(userid: string ) : Promise <Appointment[]>{
         const apmnt = await this.appointmentModel.find({userid: userid});
@@ -32,7 +32,11 @@ export class AppointmentService {
         return res;
     }
     //retorna el appointment nuevo o null(si no existe)
-    async updateAppointment(id: string, appointment: AppointmentDto) : Promise<Appointment | null> {
+    async updateAppointment(id: string, appointment: AppointmentDtoFromUser) : Promise<AppointmentDto | null> {
+        const exist = await this.appointmentModel.findById(id);
+        if(!exist){
+            console.log("mitico console.log, no existe");
+        }
         const res = await this.appointmentModel.findByIdAndUpdate(id, appointment, {new: true});
         if(!res){
             throw new NotFoundException("No hay appointment con ese id");

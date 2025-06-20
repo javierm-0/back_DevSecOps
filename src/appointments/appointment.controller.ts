@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
 import { AppointmentService } from "./appointment.service";
 import { AppointmentDto, AppointmentDtoFromUser } from "./dto/appointment.dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -27,13 +27,16 @@ export class AppointmentController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('/deleteAppointment/:id')
-    async deleteAppointment(@Param(':id') idAppointment: string) {
+    async deleteAppointment(@Param('id') idAppointment: string) {
         return this.appointmementService.deleteAppointment(idAppointment);
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @Post('/updateAppointment/:id')
-    async updateAppointment(@Param(':id') idAppointment:string,@Body() appointment: AppointmentDto) {
+    @Patch('/updateAppointment/:id')
+    /**
+     * "name" es obligatorio (aunque sea el mismo xd)
+     */
+    async updateAppointment(@Param('id') idAppointment:string,@Body() appointment: AppointmentDtoFromUser) {
         return this.appointmementService.updateAppointment(idAppointment, appointment);
     }
 
