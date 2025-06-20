@@ -14,14 +14,17 @@ export class UserService {
     async validateLogin(loggedUserDto: LoggedUserDto) {
         const userNameFromDto = loggedUserDto.userName;
         const user = await this.userModel.findOne({userName: userNameFromDto});
-        if(user){
-            const result = await bcrypt.compare(loggedUserDto.password, user.password!)
-            if (result) {
+        if(user && user.password!)
+        {
+            const result = await bcrypt.compare(loggedUserDto.password, user.password)
+            if (result) 
+            {
                 const jwtRetornado = await this.authService.generateToken(loggedUserDto);
-                return {
+                return 
+                {
                     token: jwtRetornado.token
                 }
-            }
+            }        
         }
         return null;
     }
