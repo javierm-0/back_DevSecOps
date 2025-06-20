@@ -25,10 +25,6 @@ export class AppointmentDtoFromUser{
     name!: string;
 
     @IsString()
-    @IsNotEmpty()
-    date!: Date;
-
-    @IsString()
     @IsOptional()
     info?: string;
 }
