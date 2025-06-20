@@ -7,7 +7,7 @@ import { AppointmentDto } from "./dto/appointment.dto";
 
 @Injectable()
 export class AppointmentService {
-    constructor(@InjectModel(Appointment.name) private appointmentModel : Model<Appointment>) {}
+    constructor(@InjectModel(Appointment.name) private readonly appointmentModel : Model<Appointment>) {}
 
     async getAllAppointmentsByUserId(userid: string ) : Promise <Appointment[]>{
         const apmnt = await this.appointmentModel.find({userid: userid});
