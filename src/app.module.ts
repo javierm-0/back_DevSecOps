@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 
-import { UserController } from './users/user.controller';
 import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AppointmentModule } from './appointments/appointment.module';

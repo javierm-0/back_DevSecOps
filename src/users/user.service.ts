@@ -8,8 +8,8 @@ import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>,
-                                        private authService: AuthService,){}
+    constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+                                        private readonly authService: AuthService,){}
     
     async validateLogin(loggedUserDto: LoggedUserDto) {
         const userNameFromDto = loggedUserDto.userName;

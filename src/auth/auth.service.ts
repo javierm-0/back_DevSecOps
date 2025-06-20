@@ -7,7 +7,7 @@ import { User, UserDocument } from 'src/users/schema/user.schema';
 
 @Injectable()
 export class AuthService {
-    constructor(private jwtService: JwtService, @InjectModel(User.name) private userModel : Model<UserDocument>){}
+    constructor(private readonly jwtService: JwtService, @InjectModel(User.name) private readonly userModel : Model<UserDocument>){}
 
     async generateToken(user: LoggedUserDto) : Promise<{token: string}> {
         const mongoUser  = await this.userModel.findOne({"userName":user.userName});//←obtengo version con id
