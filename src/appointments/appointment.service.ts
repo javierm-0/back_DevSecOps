@@ -23,12 +23,21 @@ export class AppointmentService {
         return foundAppointment;
     }
 
+    //retorna el appointment borrado o null(si no existe)
     async deleteAppointment(id: string) : Promise<Appointment | null> {
-        return await this.appointmentModel.findByIdAndDelete(id);
+        const res = await this.appointmentModel.findByIdAndDelete(id);
+        if(!res){
+            throw new NotFoundException("No hay appointment con ese id");
+        }
+        return res;
     }
-
+    //retorna el appointment nuevo o null(si no existe)
     async updateAppointment(id: string, appointment: AppointmentDto) : Promise<Appointment | null> {
-        return await this.appointmentModel.findByIdAndUpdate(id, appointment, {new: true});
+        const res = await this.appointmentModel.findByIdAndUpdate(id, appointment, {new: true});
+        if(!res){
+            throw new NotFoundException("No hay appointment con ese id");
+        }
+        return res;
     }
 
 

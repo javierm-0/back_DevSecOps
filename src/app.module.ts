@@ -13,7 +13,13 @@ import { AppointmentModule } from './appointments/appointment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.MONGO_URI!),
+    (()=>{
+      const mongoUri = process.env.MONGO_URI;
+      if(!mongoUri){
+        throw new Error("Falta agregar la URI de mongodb");
+      }
+      return MongooseModule.forRoot(mongoUri);
+    })(),
     UserModule,
     AuthModule,
     AppointmentModule,
