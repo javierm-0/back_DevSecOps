@@ -1,9 +1,8 @@
 # back_DevSecOps
 
 <!-- Badge de estado del workflow SonarCloud -->
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=javierm-0_back_DevSecOps&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=javierm-0_back_DevSecOps)
-https://sonarcloud.io/api/project_badges/measure?project=javierm-0_back_DevSecOps&metric=vulnerabilities
-Test
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=javierm-0_back_DevSecOps&metric=vulnerabilities)](https://sonarcloud.io/api/project_badges/measure?project=javierm-0_back_DevSecOps&metric=vulnerabilities)
+
 
 API REST para la aplicación DevSecOps, construida con NestJS.
 
