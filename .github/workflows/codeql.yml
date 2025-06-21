@@ -1,0 +1,66 @@
+# ===============================================
+# GitHub Actions - Análisis de Seguridad con CodeQL
+# ===============================================
+
+name: "CodeQL Advanced"
+
+on:
+  # Ejecuta el análisis en cada push o pull request a la rama main
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  # Ejecuta el análisis automáticamente cada domingo a las 23:22
+  schedule:
+    - cron: '22 23 * * 0'
+
+jobs:
+  analyze:
+    name: Analiza código con CodeQL (${{ matrix.language }})
+    # El tamaño del runner impacta el tiempo de análisis
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    permissions:
+      # Permisos requeridos para reportar hallazgos de seguridad
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - language: javascript-typescript
+          build-mode: none
+        # Puedes agregar más lenguajes aquí si tu proyecto los usa
+
+    steps:
+    # Descarga el código fuente del repositorio
+    - name:  Checkout del repositorio
+      uses: actions/checkout@v4
+
+    # Inicializa CodeQL y especifica los lenguajes a analizar
+    - name:  Inicializar CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
+        # Puedes agregar queries personalizadas aquí si lo deseas
+        # queries: security-extended,security-and-quality
+
+
+    # Ejecuta el análisis de CodeQL
+    - name: 🚦 Ejecutar análisis CodeQL
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
+
+    # (Opcional) Muestra un resumen visual en el workflow
+    - name:  Mostrar resultados de CodeQL
+      run: |
+        echo "## Resultados del análisis CodeQL" >> $GITHUB_STEP_SUMMARY
+        if [ -f results.sarif ]; then
+          echo "### Reporte SARIF disponible en la pestaña Security" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "No se encontró el reporte SARIF." >> $GITHUB_STEP_SUMMARY
+        fi
